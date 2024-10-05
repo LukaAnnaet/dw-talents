@@ -1,5 +1,5 @@
 // index.js
-import GetAPIObjects from './GetAPIObjects.js';
+import GetAPIObjects from './internal/GetAPIObjects.js';
 
 document.getElementById('api-buttons').addEventListener('click', async (event) => {
     if (event.target.tagName !== 'BUTTON') return;
@@ -9,7 +9,11 @@ document.getElementById('api-buttons').addEventListener('click', async (event) =
 
     try {
         const apiData = await GetAPIObjects[actionMethod]();
-        resultDiv.innerHTML = generateTalentTable(apiData);
+        if (actionMethod === 'getAllAPITalents') {
+            resultDiv.innerHTML = generateTalentTable(apiData);
+        } else{
+            resultDiv.innerHTML = `<pre>${JSON.stringify(apiData, null, 2)}</pre>`;
+        }
     } catch (error) {
         console.error('Error:', error);
         resultDiv.innerHTML = '<p style="color: red;">An error occurred while fetching data. Please try again later.</p>';
