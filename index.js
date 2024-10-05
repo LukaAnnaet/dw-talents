@@ -1,5 +1,5 @@
 // index.js
-import GetAPIObjects from './internal/GetAPIObjects.js';
+import GetAPIObjects from './GetAPIObjects.js';
 
 document.getElementById('api-buttons').addEventListener('click', async (event) => {
     if (event.target.tagName !== 'BUTTON') return;
