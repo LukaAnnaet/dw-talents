@@ -1,8 +1,8 @@
-// Talents.js
+// table.js
 
 export default function generateTalentTable(data) {
     let table = `
-        <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; text-align:left;">
+        <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; text-align:left;" id="result-table">
         <thead>
             <tr>
             <th>Name</th>
@@ -27,7 +27,7 @@ export default function generateTalentTable(data) {
             <td>${talent.rarity}</td>
             <td>${talent.category}</td>
             <td>
-                ${formatRequirements(talent.reqs)}
+                ${formatRequirements(reqs)}
             </td>
             <td>${talent.exclusiveWith.join(', ') || 'None'}</td>
             <td>${talent.stats}</td>
@@ -54,16 +54,12 @@ function formatRequirements(reqs) {
                 reqsOutput += `<strong>Obtained From:</strong><br>${value || 'N/A'}.<br>`;
                 break;
             case 'base':
-                statRequirements.push(value)
-                break;
             case 'weapon':
-                statRequirements.push(value)
-                break;
             case 'attunement':
                 statRequirements.push(value)
                 break;
             default:
-                console.log('default reached in formatrequirements2');
+                console.log(`Unrecognized key "${key}" in requirements. Default reached.`);
         }
     });
     reqsOutput += formatStats(statRequirements);
@@ -86,7 +82,6 @@ function formatStats(reqs) {
 
         if (filteredStat) {
             statReqs += filteredStat + '<br>';
-            console.log('filteredStat reqsOutput: ' + reqsOutput);
         }
     });
     if (statReqs) {
