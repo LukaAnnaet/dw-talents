@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="https://lukaannaet.github.io/dw-talents/img/favicon.ico">
@@ -21,16 +20,108 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
   <script src="./js/index.js" type="module"></script>
-
 </head>
 <body>
   
-  <div id="api-buttons">
-    <button id="fetch-talents" data-api="getAllAPITalents">Fetch All Talents</button>
-    <button id="fetch-mystic" data-api="getAllAPIMystic">Fetch All Mystic dialogue</button>
-    <button id="fetch-talents-primitive" data-api="getAllAPITalents">Fetch All Talents (primitive)</button>
+  <div id="buttons">
+    <div id="api-buttons">
+      <button id="fetch-talents" data-api="getAllAPITalents">Fetch All Talents</button>
+      <button id="fetch-mystic" data-api="getAllAPIMystic">Fetch All Mystic dialogue</button>
+      <button id="fetch-talents-primitive" data-api="getAllAPITalents">Fetch All Talents (primitive)</button>
+    </div>
+
+    <div>
+      <button id="clear-cache">clear-cache</button>
+    </div>
+  </div> 
+
+  <div id="talents-search-cover">
+    <div id="talents-search-input-container">
+      <input type="search" name="search" placeholder="type in keywords..." value="">
+      <div class="talents-search-filter">
+        <div class="filter-items">
+          <button class="filter-item">Talent search</button>
+          <button class="filter-item">Global search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="talents-search-filter-grid">
+      <!-- Rarity Filter -->
+      <div class="talents-search-filter">
+        <span class="filter-header">Rarity</span>
+        <div class="filter-items">
+          <button class="filter-item rarity-filter" data-rarity="None">Any</button>
+          <button class="filter-item rarity-filter" data-rarity="Common">Common</button>
+          <button class="filter-item rarity-filter" data-rarity="Rare">Rare</button>
+          <button class="filter-item rarity-filter" data-rarity="Advanced">Advanced</button>
+        </div>
+      </div>
+      
+      <!-- Requirements Filter -->
+      <div class="talents-search-filter">
+        <span class="filter-header">Requirements</span>
+        <div class="filter-items">
+          <button class="filter-item">Strength</button>
+          <button class="filter-item">Fortitude</button>
+          <button class="filter-item">Agility</button>
+          <button class="filter-item">Intelligence</button>
+          <button class="filter-item">Willpower</button>
+          <button class="filter-item">Charisma</button>
+        </div>
+      </div>
+      
+      <!-- Exclusive With Filter -->
+      <div class="talents-search-filter">
+        <span class="filter-header">Exclusive With</span>
+        <div class="filter-items">
+          <button class="filter-item">Any</button>
+          <button class="filter-item">Yes</button>
+          <button class="filter-item">No</button>
+        </div>
+      </div>
+      
+      <!-- Stats Filter -->
+      <div class="talents-search-filter">
+        <span class="filter-header">Stats</span>
+        <div class="filter-items">
+          <button class="filter-item">Health</button>
+          <button class="filter-item">Ether</button>
+          <button class="filter-item">Posture</button>
+          <button class="filter-item">Carry Load</button>
+          <button class="filter-item">Passive Agility</button>
+          <button class="filter-item">Sanity</button>
+        </div>
+      </div>
+
+      <!-- Sort options -->
+      <div class="talents-search-filter">
+        <span class="filter-header">Sort by</span>
+        <div class="filter-items">
+          <button class="filter-item">none</button>
+          <button class="filter-item">a-z</button>
+          <button class="filter-item">z-a</button>
+          <button class="filter-item">most reqs</button>
+          <button class="filter-item">least reqs</button>
+          <button class="filter-item">most stats</button>
+          <button class="filter-item">least stats</button>
+        </div>
+      </div>
+
+      <!-- Other options -->
+      <div class="talents-search-filter">
+        <span class="filter-header">Other</span>
+        <div class="filter-items">
+          <button class="filter-item">Collapse Category</button>
+          <button id="show-dev-key" class="filter-item">Show dev key</button> <small>what is a dev key?</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="talents-search-filter-clear">
+      <button class="clear-search">Clear Search Items</button>
+    </div>
   </div>
-  <!-- hi -->
   <div id="result"></div>
 
 </body>
