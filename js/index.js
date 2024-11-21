@@ -1,11 +1,7 @@
 // index.js
 import getData from './getData.js';
-import talentTable from './table.js';
-
-function createTable(apiData, resultDiv) {
-    resultDiv.innerHTML = talentTable(apiData);
-    if ($('#result-table').length) $('#result-table').DataTable();
-}
+import createTable from './table.js';
+import search from './search.js';
 
 function displayErrorMessage(message) {
     const errorDiv = document.getElementById('error-message');
@@ -24,6 +20,7 @@ document.getElementById('api-buttons').addEventListener('click', async (event) =
 
         if (actionMethod === 'getAllAPITalents' && event.target.id === 'fetch-talents') {
             createTable(apiData, resultDiv);
+            search();
         } else {
             resultDiv.innerHTML = `<pre>${JSON.stringify(apiData, null, 2)}</pre>`;
         }
@@ -32,4 +29,10 @@ document.getElementById('api-buttons').addEventListener('click', async (event) =
         console.error('Error:', error);
         displayErrorMessage(`Failed to fetch data for ${actionMethod}. Please try again later.`);
     }
+});
+
+// clear cache
+document.getElementById('clear-cache').addEventListener('click', () => {
+    localStorage.clear();
+    console.log('Cache cleared');
 });
