@@ -1,6 +1,6 @@
 // table.js
 
-export default function generateTalentTable(data) {
+function generateTalentTable(data) {
     let table = `
         <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; text-align:left;" id="result-table">
         <thead>
@@ -51,12 +51,14 @@ function formatRequirements(reqs) {
                 break;
             case 'from':
                 if (!value) break;
-                reqsOutput += `<strong>Obtained From:</strong><br>${value || 'N/A'}.<br>`;
+                reqsOutput += `<strong>Obtained From:</strong><br>${value || 'N/A'}<br>`;
                 break;
             case 'base':
             case 'weapon':
             case 'attunement':
                 statRequirements.push(value)
+                break;
+            case 'weaponType':
                 break;
             default:
                 console.log(`Unrecognized key "${key}" in requirements. Default reached.`);
@@ -89,6 +91,41 @@ function formatStats(reqs) {
     }
 
     return reqsOutput;
+}
+
+const tableConfig = {
+    layout: {
+        topStart: null,
+        topEnd: null,
+        bottomStart: 'info',
+        bottomEnd: null,
+    },
+    paging: false,
+    lengthChange: true,
+    order: [
+        [3, 'asc'],
+        [0, 'asc']
+    ],
+    columns: [
+        { searchable: true, orderable: true },
+        { searchable: true, orderable: false },
+        { searchable: true, orderable: false },
+        { searchable: true, orderable: true },
+        { searchable: true, orderable: false },
+        { searchable: true, orderable: false },
+        { searchable: true, orderable: false },
+        { searchable: false, orderable: false }
+    ],
+    initComplete: function () {
+        console.log('DataTable initialized!');
+    }
+};
+
+export default function createTable(apiData, resultDiv) {
+    resultDiv.innerHTML = generateTalentTable(apiData);
+    const dataTable = $('#result-table').DataTable(tableConfig);
+    const column = dataTable.column(7);
+    column.visible(!column.visible());
 }
 
 const betterWeaponNames = {
