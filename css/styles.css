@@ -1,3 +1,21 @@
 body {
     font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
 }
+
+.talents-search-filter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .talents-search-filter__header {
+    margin-right: 10px;
+  }
+  
+  .talents-search-filter__items {
+    display: flex;
+  }
+  
+  .talents-search-filter__item {
+    margin-right: 5px;
+  }
