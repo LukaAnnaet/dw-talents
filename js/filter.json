@@ -1,0 +1,9 @@
+{
+    "search": ["t", "c", "g"],
+    "rarity": ["any", "com", "rar", "adv"],
+    "requirements": ["str", "ftd", "agl", "int", "wll", "cha"],
+    "stats": ["health", "ether", "posture", "carry", "pasagl", "sanity"],
+    "exclusive": ["a", "y", "n"],
+    "sort": ["none", "atoz", "ztoa", "mreqs", "lreqs", "mstats", "lstats"],
+    "other": ["close", "devkey"]
+}
