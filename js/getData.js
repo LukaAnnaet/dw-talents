@@ -1,10 +1,11 @@
 // getData.js
 // cache and api call
-const domain = 'https://api.deepwoken.co';
+const apiDomain = 'https://api.deepwoken.co';
+const domain = 'https://lukaannaet.github.io/dw-talents/';
 
 export default class getData {
     // cache functionality
-    static ttlCache = 7; // {} days
+    static ttlCache = 3; // {} days
 
     static getFromCache(key) {
         const cachedItem = localStorage.getItem(key);
@@ -33,14 +34,14 @@ export default class getData {
     }
 
     // api call
-    static async getAllAPITalents() {
-        const APITalentsObject = (await axios.get(`${domain}/get?type=talent&name=all`)).data;
-        return APITalentsObject;
+    static async getTalents() {
+        const talentsObject = (await axios.get(`${apiDomain}/get?type=talent&name=all`)).data;
+        return talentsObject;
     }
 
-    static async getAllAPIMystic() {
-        const APIMysticObject = (await axios.get(`${domain}/get?type=mystic&name=all`)).data;
-        return APIMysticObject;
+    static async getMystic() {
+        const mysticObject = (await axios.get(`${apiDomain}/get?type=mystic&name=all`)).data;
+        return mysticObject;
     }
 
     // main()
@@ -49,8 +50,12 @@ export default class getData {
             return this.getFromCache(actionMethod);
         }
 
-        const data = await this[actionMethod](); // try...catch is handled in index.js
-        this.setInCache(actionMethod, data);
-        return data;
+        try {
+            const data = await this[actionMethod]();
+            this.setInCache(actionMethod, data);
+            return data;
+        } catch (error) {
+        console.error('Error occured in getData:', error);
+    }
     }
 }
