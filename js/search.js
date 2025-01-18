@@ -1,34 +1,95 @@
 //search.js
 
-export default function search() {
-    let dataTable = $('#result-table').DataTable();
+const jsonFilters = {
+    "search": ["t", "c", "g"], // s
+    "rarity": ["any", "com", "rar", "adv"], // r
+    "requirements": ["str", "ftd", "agl", "int", "wll", "cha"], // rq
+    "stats": ["health", "ether", "posture", "carry", "pasagl", "sanity"], // st
+    "exclusive": ["a", "y", "n", "h"], // e
+    "order": ["none", "atoz", "ztoa", "mreqs", "lreqs", "mstats", "lstats"], // or
+    "other": ["close", "devkey"] // o
+};
 
-    const globalSearch = document.getElementById('talents-search-input-container').addEventListener("input", event => {
-        const inputText = event.target.value
-        dataTable
-            .search(inputText)
-            .draw();
+function search() {
+    const currentURL = new URL(window.location.href);
+    const currentParams = new URLSearchParams(currentURL.search);
+
+    Object.keys(jsonFilters).forEach(key => {
+        const paramValue = currentParams.get(key);
+        if (paramValue && jsonFilters[key].includes(paramValue)) { // checks if the key exists and if the value is in the json or not
+            filterTable(key, paramValue);
+        } else if (paramValue == null) {
+        } else {
+            console.warn(`Value is bad: ${paramValue}`);
+        }
     });
+}
 
-    const showDevKey = document.getElementById('show-dev-key').addEventListener("click", event =>{
-        if (event.target.id !== 'show-dev-key') return;
-        const column = dataTable.column(7);
+function filterTable(key, value) {
+    const dataTable = new DataTable('#result-table');
+    const filterFunctions = {
+        // search:
 
-        column.visible(!column.visible());
-    });
+        'rarity': function (dataTable, value) {
+            const rarityMap = {'any': '', 'com': 'Common', 'rar': 'Rare', 'adv': 'Advanced'};
+            const columnIndex = 3;
+            const key = rarityMap[value];
+            if (key != null && key != undefined) { dataTable.column(columnIndex).search(key);
+            } else { console.warn(`Key doesn't match: key: ${key} value: ${value}`); }
+        },
 
-    const rarityFilter = Object.values(document.getElementsByClassName('rarity-filter')).forEach((el) => {
-        el.addEventListener("click", event => {
-            const rarity = event.target.dataset.rarity
-            console.log('hi from: ' + rarity);
-            if (rarity === 'None') {
-                dataTable.column(2).search('').draw();
-                console.log('search empty string ran');
+        // requirements:
+
+        // stats:
+
+        'exclusive': function (dataTable, value) {
+            const columnIndex = 6;
+            if (value === 'h') { const column = dataTable.column(columnIndex); column.visible(!column.visible()); // this bugs out
+            } else if (value === 'y') { dataTable.column(columnIndex).search(`^(?!None$).*`, true, false).draw();
+            } else if (value === 'n') { dataTable.column(columnIndex).search('None');
+            } else if (value === 'a') { dataTable.column(columnIndex).search('');
+            } else {
+                console.warn(`you shouldn't be able to reach here: ${value}`);
             }
-            dataTable
-                .column(2)
-                .search(rarity)
-                .draw();
+        }
+
+        // sort:
+
+        // other:
+    };
+
+    const filter = filterFunctions[key];
+    if (filter) { 
+        filter(dataTable, value);
+    } else {
+        console.warn(`No filter logic defined for key: ${key}`);
+    }
+
+    dataTable.draw();
+}
+
+function buttonListener() {
+    const globalSearch = document.getElementById('talents-search-input-container').addEventListener("input", e => {
+        const inputText = e.target.value
+        dataTable.search(inputText).draw();
+    });
+
+    const filterGrid = document.querySelectorAll('.talents-search-filter');
+    filterGrid.forEach(group => {
+        const filterAnchors = group.querySelectorAll('.filter-button');
+        filterAnchors.forEach(link => {
+            link.addEventListener('click', event => {
+                search();
+            });
         });
     });
+
+    window.addEventListener('popstate', () => {
+        search();
+    });
+}
+
+export default function mainSearch() {
+    search();
+    buttonListener();
 }
