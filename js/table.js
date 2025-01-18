@@ -1,36 +1,40 @@
 // table.js
 
-function generateTalentTable(data) {
+function generateTalentTable(talentData, mysticData) {
     let table = `
         <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; text-align:left;" id="result-table">
         <thead>
             <tr>
+            <th>Category</th>
             <th>Name</th>
             <th>Description</th>
             <th>Rarity</th>
-            <th>Category</th>
             <th>Requirements</th>
-            <th>Exclusive With</th>
             <th>Stats</th>
+            <th>Exclusive With</th>
             <th>Key (dev thing)</th>
             </tr>
         </thead>
         <tbody>`;
 
-    for (const key in data) {
-        const talent = data[key];
+    for (const key in talentData) {
+        const talent = talentData[key];
         const reqs = talent.reqs
+        const category = talent.category.toLowerCase();
+        const mystic = mysticData[category];
+        const mysticDialogue = mystic ? `"${mystic}"` : '<sub>Mystic dialogue not found!</sub>';
+
         table += `
             <tr>
+            <td>${talent.category}|${mysticDialogue}</td>
             <td>${talent.name}</td>
             <td>${talent.desc}</td>
             <td>${talent.rarity}</td>
-            <td>${talent.category}</td>
             <td>
                 ${formatRequirements(reqs)}
             </td>
-            <td>${talent.exclusiveWith.join(', ') || 'None'}</td>
             <td>${talent.stats}</td>
+            <td>${talent.exclusiveWith.join(', ') || 'None'}</td>
             <td>${key}</td>
             </tr>`;
     }
@@ -95,37 +99,55 @@ function formatStats(reqs) {
 
 const tableConfig = {
     layout: {
-        topStart: null,
-        topEnd: null,
-        bottomStart: 'info',
+        topStart: 'info',
+        topEnd: 'paging',
+        bottomStart: null,
         bottomEnd: null,
     },
     paging: false,
     lengthChange: true,
     order: [
-        [3, 'asc'],
-        [0, 'asc']
+        [0, 'asc'],
+        [1, 'asc']
     ],
     columns: [
+        {
+            searchable: true,
+            orderable: true,
+            render: (data, type, row) => {
+                if (type === 'display') {
+                    return '';
+                }
+                return data;
+            }
+        },
         { searchable: true, orderable: true },
         { searchable: true, orderable: false },
         { searchable: true, orderable: false },
-        { searchable: true, orderable: true },
         { searchable: true, orderable: false },
         { searchable: true, orderable: false },
         { searchable: true, orderable: false },
         { searchable: false, orderable: false }
     ],
+    rowGroup: {
+        dataSrc: 0,
+        startRender: (rows, group) => {
+            const [category, mystic] = group.split('|');
+            return `<span style="float: left; width: 30%; display: inline-block;">${category} (${rows.count()})</span>
+                    <span style="float: right;" width: 70%; display: inline-block;>${mystic}</span>`;
+        }
+    },
+    responsive: true,
     initComplete: function () {
         console.log('DataTable initialized!');
     }
 };
 
-export default function createTable(apiData, resultDiv) {
-    resultDiv.innerHTML = generateTalentTable(apiData);
-    const dataTable = $('#result-table').DataTable(tableConfig);
-    const column = dataTable.column(7);
-    column.visible(!column.visible());
+export default function createTable(talentData, mysticData, resultDiv) {
+    resultDiv.innerHTML = generateTalentTable(talentData, mysticData);
+    const dataTable = new DataTable('#result-table', tableConfig);
+    const column1 = dataTable.column(7);
+    column1.visible(!column1.visible());
 }
 
 const betterWeaponNames = {
