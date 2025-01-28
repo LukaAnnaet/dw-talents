@@ -1,11 +1,67 @@
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure, figcaption, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
 }
 
+.talents-search-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  padding: 5px;
+  background-color: #f0f0f0;
+}
+
+#talents-search-input-container {
+  width: 60%;
+  padding: 5px;
+  margin: 5px;
+  background-color: #f0f0f0;
+}
+
+#talents-search-input-container input[type="search"] {
+  width: 100%;
+  padding: 0.5em;
+  font-size: 1.2em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.talents-search-filter-grid {
+  width: 60%;
+}
+
+.talents-search-filter {
+  display: grid;
+  grid-template-columns: 9em 1fr;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+}
+
+.filter-header {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #00003b;
+  grid-column: 1 / 2;
+}
+
+.filter-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  grid-column: 2 / 3;
+}
+
 .filter-button {
   display: inline-block;
-  color: rgb(21, 15, 188);
+  color: rgb(20, 20, 255);
   text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .filter-button:hover {
@@ -13,16 +69,25 @@ body {
 }
 
 .filter-button:active {
-  background-color: darkviolet;
+  background-color: #9ba9d0;
   color: white;
   transform: scale(0.95);
   user-select: none;
 }
 
 .active-button {
-  border: 1px solid red;
+  color: black;
+  font-weight: bold;
 }
 
-.filter-header {
-  font-weight: bold;
+.talents-search-filter-clear {
+  text-align: center;
+}
+
+#result {
+  margin-top: 40px;
+  padding: 20px;
+  background: #ecf0f1;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
