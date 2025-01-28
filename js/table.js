@@ -140,6 +140,18 @@ const tableConfig = {
     responsive: true,
     initComplete: function () {
         console.log('DataTable initialized!');
+    },
+    createdRow: function(row, data, dataIndex) {
+        switch (data[3]) {
+            case 'Rare':
+                $(row).css('background-color', '#eb6b6d');
+                break;
+            case 'Advanced':
+                $(row).css('background-color', '#51b3da');
+                break;
+            default:
+                break;
+        }
     }
 };
 
